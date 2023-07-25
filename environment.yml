@@ -1,0 +1,36 @@
+name: alchemiscale-client
+channels:
+  - jaimergp/label/unsupported-cudatoolkit-shim
+  - conda-forge
+  - openeye
+dependencies:
+  - pip
+  - python =3.10
+
+  # alchemiscale dependencies
+  - gufe=0.9.0
+  - openfe=0.10.1
+  - requests
+  - click
+  - httpx
+
+  ## user client printing
+  - rich
+
+  # perses dependencies
+  - openeye-toolkits
+  - openmoltools
+  - cloudpathlib
+  - dask
+  - distributed
+  - numba
+  - pymbar >=3.0.6,<4
+
+  # Extras
+  - cinnabar
+
+  - pip:
+    - nest_asyncio
+    - async_lru
+    - git+https://github.com/openforcefield/alchemiscale.git@v0.1.3
+    - git+https://github.com/choderalab/perses.git@protocol-neqcyc
