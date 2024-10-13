@@ -95,8 +95,8 @@ def run(
     scope = Scope(org_scope, scope_name_level1, scope_name_level2)
     print(f"Scope is set to: {scope}")
 
-    ## Create a network and get a scope key
-    #an_sk = asc.create_network(alchemical_network, scope)
+    # Create a network and get a scope key
+    an_sk = asc.create_network(alchemical_network, scope)
 
     ## store the scoped key
     #with open(scopekey_output, 'w') as f:
