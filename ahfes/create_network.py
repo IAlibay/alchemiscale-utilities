@@ -19,7 +19,7 @@ def get_smiles(filename):
     Get a list of smiles from an input file.
     """
     # get a list of smiles
-    with open('inputs.dat', 'r') as f:
+    with open(filename, 'r') as f:
         data = f.read().splitlines()
     return data
 
