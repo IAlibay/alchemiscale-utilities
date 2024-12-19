@@ -36,12 +36,12 @@ and `ALCHEMISCALE_KEY` or to be passed via the ``--user_id`` and ``--user_key`` 
 
 Every experiment needs a Scope to keep track of what you are doing.
 
-The scope is defined in three parts: <organization>, <campaign>, <project>.
+The scope is defined in three parts: `<organization>`, `<campaign>`, `<project>`.
 
 For benchmarking, we often set the campaign to be an indicator of a given stack version,
-and the project to be the experiment, i.e. <openfe>, <openfe_v1.2>, <minisolv_elf10>.
+and the project to be the experiment, i.e. `<openfe>`, `<openfe_v1.2>`, `<minisolv_elf10>`.
 
-Remember that you are not allowed certain types of characters in your scope, like `-`.
+Remember that you are not allowed certain types of characters in your scope, such as; `-`.
 
 You can read more about the scope here: https://docs.alchemiscale.org/en/latest/user_guide.html#choosing-a-scope
 
