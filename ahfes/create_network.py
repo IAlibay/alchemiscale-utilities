@@ -14,9 +14,19 @@ import numpy as np
 import json
 
 
-def get_smiles(filename):
+def get_smiles(filename: pathlib.Path) -> list[str]:
     """
     Get a list of smiles from an input file.
+
+    Parameters
+    ----------
+    filename : pathlib.Path
+      The file to read smiles from.
+
+    Returns
+    -------
+    data : list[str]
+      A list of smiles strings
     """
     # get a list of smiles
     with open(filename, 'r') as f:
@@ -24,9 +34,19 @@ def get_smiles(filename):
     return data
 
 
-def gen_off_molecule(smi):
+def gen_off_molecule(smi: str) -> Molecule:
     """
     Generate an openff molecule from an input smiles
+
+    Parameters
+    ----------
+    smi : str
+      A smiles string
+
+    Returns
+    -------
+    m : Molecule
+      An OpenFF Molecule.
     """
     m = Molecule.from_smiles(smi)
     m.generate_conformers()
@@ -78,6 +98,10 @@ def get_small_molecule_components(
 def get_settings():
     """
     Return some settings for the AbsoluteSolvationProtocol
+
+    See the OpenFE documentation for more details on what
+    each of these settings (and the many more that are not
+    being changed) do!
     """
     settings = AbsoluteSolvationProtocol.default_settings()
     # Always set the repeats to 1 for alchemiscale
@@ -134,11 +158,43 @@ def get_settings():
     return settings
 
 
-def get_solvent_component(ion_concentration: unit.Quantity = 0.0*unit.molar):
+def get_solvent_component(
+    ion_concentration: unit.Quantity = 0.0*unit.molar
+) -> openfe.SolventComponent:
+    """
+    Get a SolventComponent.
+
+    Parameters
+    ----------
+    ion_concentration : unit.Quantity
+      The ion concentration for the solvent in units compatible with Molar.
+
+    Returns
+    -------
+    openfe.SolventComponent
+      A SolventComponent defining the solvent phase at the given ion
+      concentration.
+    """
     return openfe.SolventComponent(ion_concentration=ion_concentration)
 
 
-def _get_stateB(solvent_component) -> openfe.ChemicalSystem:
+def _get_stateB(
+    solvent_component: openfe.SolventComponent
+) -> openfe.ChemicalSystem:
+    """
+    Return a ChemicalSystem for stateB which only contains
+    the input SolventComponent
+
+    Parameters
+    ----------
+    solvent_component : openfe.SolventComponent
+      A SolventComponent defining how the system will be solvated.
+
+    Returns
+    -------
+    openfe.ChemicalSystem
+      A ChemicalSystem containing only the SolventComponent
+    """
     return openfe.ChemicalSystem({'solvent': solvent_component})
 
 
@@ -146,6 +202,22 @@ def _get_stateA(
     small_molecule_component,
     solvent_component
 ) -> openfe.ChemicalSystem:
+    """
+    Get a ChemicalSystem for stateA containing the small molecule
+    and the solvent_component
+
+    Parameters
+    ----------
+    small_molecule_component : openfe.SmallMoleculeComponent
+      The small molecule to alchemically transform.
+    solvent_component : openfe.SolventComponent
+      A SolventComponent defining how the system will be solvated.
+
+    Returns
+    -------
+    openfe.ChemicalSystem
+      A ChemicalSystem for stateA.
+    """
     return openfe.ChemicalSystem(
         {'ligand': small_molecule_component, 'solvent': solvent_component}
     )
@@ -153,7 +225,17 @@ def _get_stateA(
 
 def get_alchem_network(smcs, solvent_comp, protocol):
     """
-    Create a transformation network from all the input ligands
+    Create a transformation network from all the input ligands.
+
+    Parameters
+    ----------
+    smcs : list[openfe.SmallMoleculeComponent]
+      A list of SmallMoleculeComponents for which an AHFE will
+      be calculated.
+    solvent_comp : openfe.SolventComponent
+      A SolventComponent defining the solvent phase.
+    protocol : AbsoluteSolvationProtocol
+      An AbsoluteSolvationProtocol object defining the Transformation Protocol.
     """
     transformations = []
     for smc in smcs:
@@ -183,6 +265,17 @@ def get_alchem_network(smcs, solvent_comp, protocol):
     help="File location where the Alchemical Network should be written to",
 )
 def run(input_filename, network_filename):
+    """
+    Create an AlchemicalNetwork of AHFE transformations for each
+    molecule in a list of smiles.
+
+    Parameters
+    ----------
+    input_filename : pathlib.Path
+      A path to an input file with a list of smiles.
+    network_filename : pathlib.Path
+      A path to the file where the AlchemicalNetwork will be written.
+    """
     # small molecule components
     # Here is where you should edit things to pass in whatever serialized
     # form of an OFF molecule that you want!

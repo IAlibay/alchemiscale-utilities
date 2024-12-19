@@ -71,7 +71,7 @@ To help with this, we provide the ``monitor.py` script.
 You can call it like this:
 
 ```bash
-python monitor.py --scoped_key scoped-key.dat
+python monitor.py --scope_key scoped-key.dat
 ```
 
 Here ``scoped-key.dat`` is the serialized ScopedKey that we generated when we
@@ -89,7 +89,7 @@ a few times to see what happens.
 You can use the ``--restart`` flag to achieve this:
 
 ```bash
-python monitor.py --scoped_key scoped-key.dat --restart
+python monitor.py --scope_key scoped-key.dat --restart
 ```
 
 This will put all errored tasks back into the queue and attempt to run them again.
@@ -97,4 +97,20 @@ This will put all errored tasks back into the queue and attempt to run them agai
 
 ### 4. Getting results.
 
-To be updated!
+Finally, once your simulations are complete, you can gather the free energy results.
+
+This can be done with ``gather.py`` in the following manner:
+
+```bash
+python gather.py --scope_key scoped-key.dat --output_file results.dat
+```
+
+This scripts scans through all the Transformations and gathers ProtocolDAGResults.
+It then takes the dG estimates for all the repeats and returns an average and a standard deviation.
+
+Note 1: if you only run a single repeat, it may be useful to directly use the MBAR error. This
+is not done here, but this script could be easily modified to do this.
+
+Note 2: the ProtocolDAGResults contain other types of information, such as the MBAR overlap matrix
+and the forward & reverse energy series. Again, this data is not obtained with this script but
+it could be modified to retrieve this.
