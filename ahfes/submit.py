@@ -2,6 +2,7 @@ import click
 import os
 import json
 import pathlib
+from tqdm import tqdm
 import openfe
 from gufe import tokenization
 from alchemiscale import AlchemiscaleClient, Scope, ScopedKey
@@ -31,16 +32,16 @@ def get_network(filename: pathlib.Path):
     help='The organization scope name',
 )
 @click.option(
-    '--scope_name_level1',
+    '--scope_name_campaign',
     type=str,
     required=True,
-    help='The level1 transformation scope name',
+    help='The campaign transformation scope name',
 )
 @click.option(
-    '--scope_name_level2',
+    '--scope_name_project',
     type=str,
     required=True,
-    help='The level2 transformation scope name',
+    help='The project transformation scope name',
 )
 @click.option(
    '--repeats',
@@ -70,8 +71,8 @@ def get_network(filename: pathlib.Path):
 def run(
     network_filename,
     org_scope,
-    scope_name_level1,
-    scope_name_level2,
+    scope_name_campaign,
+    scope_name_project,
     repeats,
     user_id, user_key,
     scopekey_output
@@ -92,23 +93,25 @@ def run(
     print(alchemical_network)
 
     # Set the scope for the transformation
-    scope = Scope(org_scope, scope_name_level1, scope_name_level2)
+    scope = Scope(org_scope, scope_name_campaign, scope_name_project)
     print(f"Scope is set to: {scope}")
 
     # Create a network and get a scope key
     an_sk = asc.create_network(alchemical_network, scope)
 
-    ## store the scoped key
-    #with open(scopekey_output, 'w') as f:
-    #    f.write(str(network_sk))
+    # store the scoped key
+    with open(scopekey_output, 'w') as f:
+        f.write(str(an_sk))
 
-    ## action out tasks
-    #for transform in network.edges:
-    #    transform_sk = asc.get_scoped_key(transform, scope)
-    #    tasks = asc.create_tasks(transform_sk, count=repeats)
-    #    asc.action_tasks(tasks, network_sk)
-    #
-    #asc.get_network_status(network_sk)
+    # action out tasks
+    print(f"Actioning {repeats} repeats for {len(alchemical_network.edges)} transformation")
+    for transform in tqdm(alchemical_network.edges):
+        transform_sk = asc.get_scoped_key(transform, scope)
+        tasks = asc.create_tasks(transform_sk, count=repeats)
+        asc.action_tasks(tasks, an_sk)
+    
+    # check what the network status looks like
+    asc.get_network_status(an_sk)
 
 
 if __name__ == "__main__":

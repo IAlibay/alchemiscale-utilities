@@ -103,7 +103,7 @@ def get_settings():
     settings.solvent_equil_simulation_settings.equilibration_length_nvt = 100 * unit.picosecond
     settings.solvent_equil_simulation_settings.equilibration_length = 100 * unit.picosecond
     settings.solvent_equil_simulation_settings.production_length = 100 * unit.picosecond
-    settings.vacuum_equil_simulation_settings.equilibration_length_nvt = 100 * unit.picosecond
+    settings.vacuum_equil_simulation_settings.equilibration_length_nvt = 0 * unit.picosecond # Vacuum != NVT
     settings.vacuum_equil_simulation_settings.equilibration_length = 100 * unit.picosecond
     settings.vacuum_equil_simulation_settings.production_length = 100 * unit.picosecond
     # Alchemical Equilibration settings (then you run this)
@@ -128,6 +128,9 @@ def get_settings():
         0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
         0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
     ]
+    # Set the number of replicas
+    settings.vacuum_simulation_settings.n_replicas = 26
+    settings.solvent_simulation_settings.n_replicas = 26
     return settings
 
 
