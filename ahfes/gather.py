@@ -28,7 +28,7 @@ def _get_average_and_stdevs(estimates) -> tuple[unit.Quantity, unit.Quantity]:
     u = estimates[0].u
     dGs = [i.to(u).m for i in estimates]
 
-    avg = np.averages(dGs) * u
+    avg = np.average(dGs) * u
     stdev = np.std(dGs) * u
 
     return avg, stdev
