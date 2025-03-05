@@ -59,7 +59,7 @@ To do this, we can use the ``--repeats`` flag.
 Here is an example call for the script w/ 3 repeats per Transformation on the openfe scope:
 
 ```bash
-python submit.py --network_filename network.json --org_scope "openfe" --scope_name_level1 "ofe_v1_2" --scope_name_level2 "minisolv_oechemelf10" --repeats 3
+python submit.py --network_filename network.json --org_scope "openfe" --scope_name_campaign "ofe_v1_2" --scope_name_project "minisolv_oechemelf10" --repeats 3
 ```
 
 ### 3. Monitoring your simulation
