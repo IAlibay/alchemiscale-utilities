@@ -86,7 +86,7 @@ def get_water_settings():
     settings.solvent_simulation_settings.equilibration_length = 1.0 * unit.nanosecond
     settings.vacuum_simulation_settings.equilibration_length = 0.5 * unit.nanosecond
     # This is the alchemical production length
-    settings.solvent_simulation_settings.production_length = 2.0 * unit.nanosecond
+    settings.solvent_simulation_settings.production_length = 10.0 * unit.nanosecond
     settings.vacuum_simulation_settings.production_length = 2.0 * unit.nanosecond
     return settings
 
